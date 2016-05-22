@@ -78,26 +78,29 @@ def descargar_boletines():
         for url in bar(urls):
             filename = url.split("/")[-1]
             file_path = _PDF_PATH + filename
-            req = Request(url)
-            try:
-                pdf_file = urlopen(req)
-            except HTTPError as e:
-                print('Error en la url: {0}'.format(url))
-                print(e.code, " - ", e.reason)
-            except URLError as e:
-                print('Error en la url: {0}'.format(url))
-                print(e.code, " - ", e.reason)
+            if not os.path.isfile(file_path):
+                req = Request(url)
+                try:
+                    pdf_file = urlopen(req)
+                except HTTPError as e:
+                    print('Error en la url: {0}'.format(url))
+                    print(e.code, " - ", e.reason)
+                except URLError as e:
+                    print('Error en la url: {0}'.format(url))
+                    print(e.code, " - ", e.reason)
+                else:
+                    with open(file_path, 'wb') as local_file:
+                        local_file.write(pdf_file.read())
             else:
-                with open(file_path, 'wb') as local_file:
-                    local_file.write(pdf_file.read())
+                print("El archivo {0} ya se descargo.".format(filename))
     print("Descarga Finalizada")
 
 
-def pdf_to_csv_with_PyPDF():
+def pdf_to_csv():
     """
     Iterates throught all the pdf stored in ./data/pdf/ folder and export its
     content to the file data.csv.
-    The format of the csv file should have two columns: id and text
+    The format of the csv file should have two columns: document_id and document_text
     """
     bar = progressbar.ProgressBar()
     csv_data_file = _DATA_PATH + "data.csv"
@@ -124,8 +127,8 @@ def pdf_to_csv_with_PyPDF():
 
 def limpiar_texto(text):
     """
-    Funcion para limpiar los execivos end of lines que vienen tras la extraccion
-    del texto en pdf.
+    Debido a que los PDFs tienen un formato tabular, los textos vienen con excesivos \n. Los parrafos se separan con
+    doble end of line en vez de uno simple. Por el momento no es usada esta funcion.
     """
     # TODO: Use NLTK's sentence segmentation.
     new_text = ""
@@ -138,10 +141,10 @@ def limpiar_texto(text):
 
 if __name__ == "__main__":
     print("Iniciando el scrapping de urls de boletines.")
-    scrapear_url_boletines()
+    #scrapear_url_boletines()
     print("Iniciando la descarga de boletines.")
     #descargar_boletines()
     #pdf_to_csv()
     print("Iniciando la conversion de PDF a CSV.")
-    #pdf_to_csv_with_PyPDF()
+    pdf_to_csv()
     #limpiar_texto()
