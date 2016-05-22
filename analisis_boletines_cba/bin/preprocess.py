@@ -21,10 +21,9 @@ import iepy
 import multiprocessing
 iepy.setup(__file__)
 from iepy.data.db import DocumentManager
-from iepy.preprocess.stanford_preprocess import StanfordPreprocess
 from iepy.preprocess.pipeline import PreProcessPipeline, PreProcessSteps
-from iepy.preprocess.segmenter import SyntacticSegmenterRunner
 from iepy.preprocess.tokenizer import TokenizeSentencerRunner
+from analisis_boletines_cba.preprocess.resoluciones import ResolucionesNERRunner
 
 class ParallelDocManager(DocumentManager):
 
@@ -36,8 +35,8 @@ class ParallelDocManager(DocumentManager):
 
 def start_preprocess(docs, increment_ner):
     pipeline = PreProcessPipeline([
-        StanfordPreprocess(increment_ner),
-        SyntacticSegmenterRunner(increment=True)
+        TokenizeSentencerRunner(increment_ner),
+        ResolucionesNERRunner(),
     ], docs)
     pipeline.process_everything()
 

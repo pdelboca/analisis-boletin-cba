@@ -8,3 +8,7 @@ datos referidos a la creación de empresas en la Provincia.
  - **Testeado con Python 3.4**
  - [Instalar IEPY](http://iepy.readthedocs.io/en/stable/installation.html) con sus dependencias
  - Instalar PyPDF2 y ProgressBar2
+
+# Carga de Datos
+ - Ejecutar el archivo **descarga_boletines.py**
+ - Importar el archivo de datos a IEPY con csv_to_iepy.py
