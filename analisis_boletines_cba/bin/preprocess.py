@@ -24,6 +24,7 @@ from iepy.data.db import DocumentManager
 from iepy.preprocess.pipeline import PreProcessPipeline, PreProcessSteps
 from iepy.preprocess.tokenizer import TokenizeSentencerRunner
 from analisis_boletines_cba.preprocess.resoluciones import ResolucionesNERRunner
+from analisis_boletines_cba.preprocess.sociedades import SociedadesNERRunner
 
 class ParallelDocManager(DocumentManager):
 
@@ -37,6 +38,7 @@ def start_preprocess(docs, increment_ner):
     pipeline = PreProcessPipeline([
         TokenizeSentencerRunner(increment_ner),
         ResolucionesNERRunner(),
+        SociedadesNERRunner(),
     ], docs)
     pipeline.process_everything()
 
